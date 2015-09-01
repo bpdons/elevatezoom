@@ -1,4 +1,9 @@
 /*
+ * jQuery elevateZoom 3.0.8.1
+ * Bug fix to stop multiple zoomContainer objects created upon resize.
+ */
+
+/*
  *	jQuery elevateZoom 3.0.8
  *	Demo's and documentation:
  *	www.elevateweb.co.uk/image-zoom
@@ -257,8 +262,13 @@ if ( typeof Object.create !== 'function' ) {
 				//create the div's                                                + ""
 				//self.zoomContainer = $('<div/>').addClass('zoomContainer').css({"position":"relative", "height":self.nzHeight, "width":self.nzWidth});
 
-				self.zoomContainer = $('<div class="zoomContainer" style="-webkit-transform: translateZ(0);position:absolute;left:'+self.nzOffset.left+'px;top:'+self.nzOffset.top+'px;height:'+self.nzHeight+'px;width:'+self.nzWidth+'px;"></div>');
-				$('body').append(self.zoomContainer);	
+				// Check if zoomContainer already exists - if so, use existing html object
+				if ($('.zoomContainer').length > 0) {
+					self.zoomContainer = $('.zoomContainer');
+				} else {
+					self.zoomContainer = $('<div class="zoomContainer" style="-webkit-transform: translateZ(0);position:absolute;left:' + self.nzOffset.left + 'px;top:' + self.nzOffset.top + 'px;height:' + self.nzHeight + 'px;width:' + self.nzWidth + 'px;"></div>');
+					$('body').append(self.zoomContainer);
+				}
 
 
 				//this will add overflow hidden and contrain the lens on lens mode       
